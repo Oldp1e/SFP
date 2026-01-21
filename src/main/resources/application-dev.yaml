@@ -27,3 +27,24 @@ spring:
     baseline-on-migrate: true
     placeholders:
       DB_USER_PASSWORD_HASH: ${DB_USER_PASSWORD_HASH}
+
+# Configuração de Documentação - DEV (com detalhes adicionais)
+api:
+  doc:
+    title: SFP - Sistema Financeiro Particular (DEV)
+    description: |
+      API REST para gerenciamento de finanças pessoais com autenticação JWT.
+      
+      Ambiente: Desenvolvimento
+      Banco de Dados: H2 em memória
+      Endpoints: Totalmente documentados e testáveis via Swagger UI
+    version: 1.0.0-DEV
+
+springdoc:
+  swagger-ui:
+    enabled: true
+    try-it-out-enabled: true
+    filter: true
+    show-extensions: true
+  api-docs:
+    path: /v3/api-docs

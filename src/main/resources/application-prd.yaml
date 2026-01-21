@@ -27,3 +27,18 @@ spring:
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration
+
+# Configuração de Documentação - PRODUÇÃO (sem detalhes sensíveis)
+api:
+  doc:
+    title: SFP - Sistema Financeiro Particular
+    description: API REST para gerenciamento de finanças pessoais com autenticação JWT
+    version: 1.0.0
+
+springdoc:
+  swagger-ui:
+    enabled: true
+    try-it-out-enabled: false
+    filter: true
+  api-docs:
+    path: /v3/api-docs

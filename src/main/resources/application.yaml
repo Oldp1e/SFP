@@ -9,3 +9,26 @@ jwt:
   secret: ${JWT_SECRET}
   expiration: 86400000  # 24 hours in milliseconds
 
+# Configuração de Documentação/OpenAPI
+api:
+  doc:
+    title: SFP - Sistema Financeiro Particular
+    description: API REST para gerenciamento de finanças pessoais com autenticação JWT
+    version: 1.0.0
+    contact-name: Suporte SFP
+    contact-email: support@sfp.com
+    contact-url: https://sfp.com
+    license-name: Apache 2.0
+    license-url: https://www.apache.org/licenses/LICENSE-2.0.html
+
+# Configuração do SpringDoc OpenAPI
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  show-actuator: false
+  use-fqn: false
