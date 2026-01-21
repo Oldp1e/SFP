@@ -4,3 +4,8 @@ spring:
   jpa:
     open-in-view: false
     show-sql: false
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: 86400000  # 24 hours in milliseconds
+
