@@ -1,143 +1,231 @@
-# 🚀 QUICK START - Começar em 5 Minutos
+# 🚀 GUIA DE INICIALIZAÇÃO RÁPIDO - SFP
 
-## 1️⃣ Iniciar em Desenvolvimento
+## ⚡ Comece em 3 passos
 
+### 1️⃣ Compilar o Projeto
 ```bash
 cd D:\Projetos Pessoais\SFP Data\Projects\sfp\sfp
+.\mvnw.cmd clean package -DskipTests
+```
+
+**Resultado esperado:**
+```
+[INFO] BUILD SUCCESS
+[INFO] JAR criado em: target/sfp-0.0.1-SNAPSHOT.jar
+```
+
+### 2️⃣ Rodar em Desenvolvimento
+```bash
 .\mvnw.cmd spring-boot:run -Dspring-boot.run.arguments="--spring.profiles.active=dev"
 ```
 
-Aguarde até ver: `Started SfpApplication in X seconds`
+**Resultado esperado:**
+```
+Started SfpApplication in 10 seconds
+Application running on: http://localhost:8080
+```
 
-## 2️⃣ Acessar Swagger UI
-
+### 3️⃣ Acessar a API
 Abra no navegador:
 ```
 http://localhost:8080/swagger-ui/index.html
 ```
 
-## 3️⃣ Testar Endpoints
+---
 
-### Opção A: Via Swagger UI (Recomendado)
-1. Clique em "Autenticação" (grupo de endpoints)
-2. Clique em "POST /auth/register" → "Try it out"
-3. Preencha o formulário:
-   ```json
-   {
-     "email": "teste@example.com",
-     "password": "Teste@123456",
-     "fullName": "Usuário Teste",
-     "role": "USER"
-   }
-   ```
-4. Clique "Execute"
-5. Faça login em "POST /auth/login"
-6. Copie o token da resposta
-7. Clique no cadeado "Authorize" no topo
-8. Cole: `Bearer {seu_token}`
-9. Teste "GET /users/me"
+## 📖 PRIMEIRO USO
 
-### Opção B: Via cURL
+### 1. Registrar Usuário
+No Swagger, abra a seção **Autenticação** e clique em `POST /auth/register`:
+
+```json
+{
+  "email": "seu@email.com",
+  "password": "Senha123!",
+  "fullName": "Seu Nome",
+  "role": "USER"
+}
+```
+
+### 2. Fazer Login
+Clique em `POST /auth/login`:
+
+```json
+{
+  "email": "seu@email.com",
+  "password": "Senha123!"
+}
+```
+
+**Resposta:**
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "expiresIn": 86400
+}
+```
+
+### 3. Autorizar no Swagger
+Clique no botão 🔒 **Authorize** e cole:
+```
+Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+### 4. Criar uma Conta
+Abra **Contas** → `POST /accounts`:
+
+```json
+{
+  "name": "Conta Corrente",
+  "initialBalance": 5000.00
+}
+```
+
+### 5. Registrar uma Receita
+Abra **Receitas** → `POST /incomes`:
+
+```json
+{
+  "accountId": "ID_DA_CONTA_CRIADA",
+  "description": "Salário",
+  "amount": 3500.00,
+  "incomeType": "SALARY",
+  "referenceDate": "2025-01-20"
+}
+```
+
+### 6. Ver Balanço
+Abra **Balanço** → `GET /balance/current`
+
+---
+
+## 🛠️ TROUBLESHOOTING
+
+### Porta 8080 já está em uso
 ```bash
-# 1. Register
-curl -X POST http://localhost:8080/auth/register ^
-  -H "Content-Type: application/json" ^
-  -d "{\"email\":\"teste@example.com\",\"password\":\"Teste@123456\",\"fullName\":\"Usuário Teste\",\"role\":\"USER\"}"
+# Windows - Encontrar processo
+netstat -ano | findstr :8080
 
-# 2. Login
-curl -X POST http://localhost:8080/auth/login ^
-  -H "Content-Type: application/json" ^
-  -d "{\"email\":\"teste@example.com\",\"password\":\"Teste@123456\"}" > response.json
-
-# 3. Extrair token (Windows PowerShell)
-$token = (Get-Content response.json | ConvertFrom-Json).token
-
-# 4. Usar token
-curl -X GET http://localhost:8080/users/me ^
-  -H "Authorization: Bearer $token"
+# Matar processo (substitua PID)
+taskkill /PID 12345 /F
 ```
 
-### Opção C: Via Postman
-1. Abra Postman
-2. Crie Nova Requisição
-3. **POST** → `http://localhost:8080/auth/register`
-4. Body → JSON:
-   ```json
-   {
-     "email": "teste@example.com",
-     "password": "Teste@123456",
-     "fullName": "Usuário Teste",
-     "role": "USER"
-   }
-   ```
-5. Send
-6. Repita para `/auth/login`
-7. Copie token → Vá para `/users/me`
-8. Header → Authorization: `Bearer {token}`
-9. Send
+### Erro de compilação
+```bash
+# Limpar cache e tentar novamente
+.\mvnw.cmd clean install -DskipTests
+```
+
+### H2 Database vazio
+Normal! Flyway cria tudo automaticamente. Verifique logs para erros.
+
+### Token expirado
+Faça login novamente. Tokens duram 24 horas.
 
 ---
 
-## 📖 Documentação
+## 📊 EXEMPLO COMPLETO: Controlar Gastos Mensais
 
-| Documento | Conteúdo |
-|-----------|----------|
-| **HELP.md** | 📋 Guia de uso da API (estrutura, exemplos, JWT) |
-| **README.md** | 🚀 Guia de desenvolvimento e deployment |
-| **API_DOCUMENTATION.md** | 📚 Documentação técnica completa (arquitetura, fluxos) |
-| **IMPLEMENTATION_SUMMARY.md** | ✅ Sumário do que foi implementado |
-
----
-
-## 🔍 Endpoints Disponíveis
-
-### 🔐 Autenticação (Público)
 ```
-POST /auth/login
-  - Email e senha
-  - Retorna: token JWT + dados do usuário
-  
-POST /auth/register
-  - Cria novo usuário
-  - Retorna: dados do novo usuário
-```
-
-### 👤 Usuários (Protegido)
-```
-GET /users/me
-  - Requer: Authorization: Bearer {token}
-  - Retorna: Dados do usuário logado
+┌─ Janeiro/2025
+│
+├─ Receitas
+│  ├─ Salário: R$ 3.500,00 (SALARY)
+│  └─ VR: R$ 400,00 (BENEFIT)
+│  = Total: R$ 3.900,00
+│
+├─ Despesas
+│  ├─ Aluguel: R$ 1.500,00 (FIXED)
+│  ├─ Supermercado: R$ 800,00 (VARIABLE)
+│  ├─ Cartão:
+│  │  └─ TV 55" parcelada 3x: R$ 800,00/mês (CREDIT_CARD)
+│  └─ Total: R$ 3.100,00
+│
+├─ Balanço: R$ 800,00 (positivo! 🎉)
+│
+└─ Próximo passo: Simular maior compra?
 ```
 
 ---
 
-## 🔧 Parar a Aplicação
+## 🎯 CASOS DE USO COMUNS
 
-Pressione **Ctrl + C** no terminal
+### Caso 1: Acompanhar Salário
+1. POST `/incomes` com SALARY
+2. GET `/balance/current` para ver balanço
 
----
+### Caso 2: Controlar Despesas Variáveis
+1. POST `/expenses` com VARIABLE e data
+2. GET `/expenses?month=1&year=2025&type=VARIABLE`
+3. Veja soma no `/balance/monthly`
 
-## ❓ Dúvidas?
+### Caso 3: Parcelar Compra no Cartão
+1. POST `/credit-cards` para registrar cartão
+2. POST `/credit-cards/{id}/transactions` com compra
+3. Sistema calcula parcelas e datas automaticamente
 
-- Erro `java.lang.UnsupportedClassVersionError`? → Java 21+ instalado?
-- Port 8080 em uso? → `netstat -ano | findstr :8080` e kill
-- Token expirado? → Faça login novamente
-- Veja `HELP.md` para mais troubleshooting
-
----
-
-## 🎯 Próximas Passos
-
-1. ✅ Testar endpoints (acima)
-2. 📖 Ler `HELP.md` para entender a API
-3. 📚 Ler `README.md` para deployment
-4. 🔧 Adicionar seus próprios endpoints
-5. 🚀 Deploy em produção
+### Caso 4: Simular Grande Compra
+1. POST `/simulations` com INSTALLMENT
+2. Veja impacto mensal na resposta
+3. Decida se compra ou não
 
 ---
 
-**Aproveite! 🎉**
+## 📱 ENDPOINTS MAIS ÚTEIS
 
-Dúvidas sobre a API? Veja `HELP.md`  
-Dúvidas sobre desenvolvimento? Veja `README.md`  
-Dúvidas técnicas? Veja `API_DOCUMENTATION.md`
+| Ação | Endpoint | Método |
+|------|----------|--------|
+| Ver balanço de hoje | `/balance/current` | GET |
+| Ver balanço de janeiro | `/balance/monthly?month=1&year=2025` | GET |
+| Ver todos meses de 2025 | `/balance/yearly?year=2025` | GET |
+| Listar receitas de janeiro | `/incomes?month=1&year=2025` | GET |
+| Listar despesas fixas | `/expenses?month=1&year=2025&type=FIXED` | GET |
+| Registrar compra parcelada | `/credit-cards/{id}/transactions` | POST |
+| Simular compra | `/simulations` | POST |
+
+---
+
+## 🔐 SEGURANÇA
+
+Cada endpoint:
+- ✅ Requer token JWT válido
+- ✅ Mostra apenas dados do usuário autenticado
+- ✅ Não permite acesso a dados de outros usuários
+- ✅ Token expira em 24 horas (faça login novamente)
+
+---
+
+## 💡 DICAS
+
+- Use o filtro `month` e `year` para organizar dados
+- Sempre use `?month=X&year=Y` em `/balance/monthly`
+- Simulações não alteram dados (são apenas cálculos)
+- Parcelamentos são calculados automaticamente
+- Balanço = soma receitas - soma despesas
+
+---
+
+## 📚 DOCUMENTAÇÃO COMPLETA
+
+Dentro do projeto, leia em ordem:
+1. `README.md` - Visão geral
+2. `USAGE_GUIDE.md` - Como usar (com exemplos)
+3. `FINAL_REPORT.md` - Resumo técnico
+4. `PROJECT_SUMMARY.md` - Arquitetura detalhada
+
+---
+
+## 🎉 PRONTO!
+
+Você tem um **Sistema Financeiro Pessoal** profissional rodando! 
+
+**Próximos passos:**
+- [ ] Explorar todos os endpoints no Swagger
+- [ ] Criar suas contas e registrar dados reais
+- [ ] Desenvolver um frontend (React, Angular, etc)
+- [ ] Fazer testes automatizados
+- [ ] Deployar em produção com PostgreSQL
+
+---
+
+**Sucesso! 🚀**

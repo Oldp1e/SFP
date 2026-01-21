@@ -107,4 +107,95 @@ public class OpenApiConfig {
                 .build();
     }
 
+    /**
+     * Grupo de documentação para Contas.
+     * Endpoints: /accounts/**
+     */
+    @Bean
+    public GroupedOpenApi accountsApi() {
+        return GroupedOpenApi.builder()
+                .group("Contas")
+                .displayName("Gerenciar Contas Bancárias e Carteiras")
+                .pathsToMatch("/accounts/**")
+                .build();
+    }
+
+    /**
+     * Grupo de documentação para Receitas.
+     * Endpoints: /incomes/**
+     */
+    @Bean
+    public GroupedOpenApi incomesApi() {
+        return GroupedOpenApi.builder()
+                .group("Receitas")
+                .displayName("Gerenciar Receitas e Entradas")
+                .pathsToMatch("/incomes/**")
+                .build();
+    }
+
+    /**
+     * Grupo de documentação para Despesas.
+     * Endpoints: /expenses/**
+     */
+    @Bean
+    public GroupedOpenApi expensesApi() {
+        return GroupedOpenApi.builder()
+                .group("Despesas")
+                .displayName("Gerenciar Despesas e Saídas")
+                .pathsToMatch("/expenses/**")
+                .build();
+    }
+
+    /**
+     * Grupo de documentação para Cartões de Crédito.
+     * Endpoints: /credit-cards/**
+     */
+    @Bean
+    public GroupedOpenApi creditCardsApi() {
+        return GroupedOpenApi.builder()
+                .group("Cartões de Crédito")
+                .displayName("Gerenciar Cartões de Crédito e Transações")
+                .pathsToMatch("/credit-cards/**")
+                .build();
+    }
+
+    /**
+     * Grupo de documentação para Investimentos.
+     * Endpoints: /investments/**
+     */
+    @Bean
+    public GroupedOpenApi investmentsApi() {
+        return GroupedOpenApi.builder()
+                .group("Investimentos")
+                .displayName("Gerenciar Investimentos e Aplicações")
+                .pathsToMatch("/investments/**")
+                .build();
+    }
+
+    /**
+     * Grupo de documentação para Balanço.
+     * Endpoints: /balance/**
+     */
+    @Bean
+    public GroupedOpenApi balanceApi() {
+        return GroupedOpenApi.builder()
+                .group("Balanço")
+                .displayName("Visualizar Balanço e Resumos Financeiros")
+                .pathsToMatch("/balance/**")
+                .build();
+    }
+
+    /**
+     * Grupo de documentação para Simulações.
+     * Endpoints: /simulations/**
+     */
+    @Bean
+    public GroupedOpenApi simulationsApi() {
+        return GroupedOpenApi.builder()
+                .group("Simulações")
+                .displayName("Simular Cenários Financeiros e Compras")
+                .pathsToMatch("/simulations/**")
+                .build();
+    }
+
 }
